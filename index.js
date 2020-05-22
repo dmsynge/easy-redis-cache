@@ -5,14 +5,13 @@ class EasyRedis {
 
   set(key, value, ttl) {
     return new Promise((resolve, reject) => {
-      if(!key || !value) return reject('must contain key or value');
+      if(!key || !value) return reject('must contain key and value');
       if(!ttl) {
         this.client.set(key, value, function(err, reply) {
           if(err) return reject(err);
           return resolve(reply)
         });
-      }
-      if(ttl && typeof ttl === 'number') {
+      } else if(ttl && typeof ttl === 'number') {
         this.client.setex(key, ttl, value, function(err, reply) {
           if(err) return reject(err);
           return resolve(reply);
@@ -34,4 +33,3 @@ class EasyRedis {
 }
 
 module.exports = EasyRedis;
-
